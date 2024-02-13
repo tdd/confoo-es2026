@@ -1,5 +1,5 @@
 {
-  "name": "smashing-freiburg-2023-javascript",
+  "name": "confoo-2024-es2026",
   "private": true,
   "scripts": {
     "build": "slidev build --base=/confoo-es2026/",
