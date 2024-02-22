@@ -42,6 +42,17 @@ Offices in Paris (HQ), Nantes, Niort, Berlin and Milan, nice hybrid working poli
 We're always hiring talented tech staff! Check out our [careers page](https://careers.doctolib.com/tech-doctolib/)!
 
 ---
+
+# These slides are interactive
+
+- <kbd>o</kbd> for overview
+- <kbd>d</kbd> to toggle dark mode
+- <kbd>f</kbd> for fullscreen
+- <kbd>g</kbd> to go to any slide by number / title fragment
+- All HTML renderings are interactive, play with them!
+- Hover on the bottom left corner for a toolbar
+
+---
 layout: cover
 background: /covers/ayo-ogunseinde-sibVwORYqs0-unsplash.jpg
 ---
@@ -82,7 +93,7 @@ This is all [transparent and public](https://github.com/tc39).
 
 ---
 
-# The [**5 stages**](https://tc39.github.io/process-document/) of ~~grief~~ the TC39 process
+# The [**6 stages**](https://tc39.github.io/process-document/) of ~~grief~~ the TC39 process
 
 <table>
   <thead>
@@ -105,12 +116,16 @@ This is all [transparent and public](https://github.com/tc39).
       <td>Initial <em>Spec Text</em> is done, which covers all critical aspects and tech semantics.</td>
     </tr>
     <tr v-click>
-      <th><strong>3 Candidate</strong></th>
+      <th><strong>2.7 Draft+</strong></th>
       <td>Spec is finalized, duly reviewed and approved. API is finalized, all edge cases are handled.</td>
     </tr>
     <tr v-click>
+      <th><strong>3 Candidate</strong></th>
+      <td>Full Test262 coverage</td>
+    </tr>
+    <tr v-click>
       <th><strong>4 Finished</strong></th>
-      <td>Full Test262 coverage, 2+ native implementations (often v8 and Spidermonkey), significant real-world feedback, and <em>Spec Editor</em> sign-off. Will ship in the next feature freeze (January/March), and then in the follow-up official release.</td>
+      <td>2+ native implementations (often v8 and Spidermonkey), significant real-world feedback, and <em>Spec Editor</em> sign-off. Will be in next feature freeze (January/March), then in next official release.</td>
     </tr>
   </tbody>
 </table>

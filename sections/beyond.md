@@ -7,6 +7,164 @@ background: /covers/jan-tinneberg-tVIv23vcuz4-unsplash.jpg
 
 ---
 
+# E2025? `Array.fromAsync(…)` <span class="stage">stage 3</span>
+
+We've had `Array.from(…)` since ES2015, that consumes any **synchronous iterable** to turn it into an actual array.
+
+We'll likely get `Array.fromAsync(…)`, that does the same thing with **async iterables**.
+
+```js
+// Reads all STDIN (readable stream) lines into an array
+process.stdin.setEncoding('utf-8')
+const inputLines = await Array.fromAsync(process.stdin)
+```
+
+```js
+// Let's remove trailing whitespace / LF / CR, while we're at it
+process.stdin.setEncoding('utf-8')
+const inputLines = await Array.fromAsync(process.stdin, (line) => line.trimEnd())
+```
+
+---
+
+# E2025? Collection / iterator utilities <span class="stage">stage 3</span>
+
+We're not going to stop processing data collections (and iterables in general) anytime soon, so we might as well have more tools in our standard toolbelt for this…
+
+We're about to get many [**new `Set` methods**](https://github.com/tc39/proposal-set-methods#readme) (intersection, union, difference, disjunction, super/subset, etc.) and a ton of [**iterator helpers**](https://github.com/tc39/proposal-iterator-helpers#readme) (instead of having to roll our own generative functions for `take`, `filter` or `map`, for instance).
+
+```js
+function* fibonacci() { /* … */ }
+
+const firstTens = new Set([1, 2, 3, 4, 5, 6, 7, 8, 9, 10])
+const fibs = new Set(fibonacci().take(10))
+const earlyFibs = firstTens.intersection(fibonacci) // => Set { 1, 2, 3, 5, 8 }
+const earlyNonFibs = firstTens.difference(fibonacci) // => Set { 4, 6, 7, 9, 10 }
+const evenFibs = earlyFibs.values().filter((n) => n % 2 === 0)
+```
+
+<Footnote>
+
+Asynchronous versions are in the pipeline too, at stage 2 right now (February 2024).
+
+</Footnote>
+
+
+---
+
+# ES2025? Guaranteed resource cleanup <span class="stage">stage 3</span>
+
+Finally a mechanism to guarantee resource disposal!
+
+Quite like C#'s `using`, Python's `with` or Java's try-with-resources: disposes of the resource in a guaranteed way when the scope or closure is discarded.
+
+Exists in synchronous and asynchronous variants.  Based on two new well-known symbols (`Symbol.dispose` et `Symbol.asyncDispose`), supported out-of-the-box by timers and streams.
+
+```js
+async function copy4K(s1, s2) {
+  using f1 = await fs.promises.open(s1, constants.O_RDONLY),
+        f2 = await fs.promises.open(s2, constants.O_WRONLY)
+
+  const buffer = Buffer.alloc(4096)
+  const { bytesRead } = await f1.read(buffer)
+  await f2.write(buffer, 0, bytesRead)
+} // 'f2' is disposed first, then 'f1' is disposed second
+```
+
+<Footnote>
+
+Proposal's name: *Explicit Resource Management*. TypeScript 5.2+ and Babel 7.22+ support it. Early implementations in Node.js (e.g. Timers).
+
+</Footnote>
+
+---
+
+# ES2025? Import / export attributes <span class="stage">stage 3</span>
+
+Provides free-form metadata on imports, with an inline syntax.
+
+The dominating use case, long discussed, is extra module types with matching type expectations for security reasons (a bit like HTTP's `X-Content-Type-Options: nosniff` response header).  We then use the `type` metadata, leveraged by engines.
+
+```js
+// Static imports
+import config from '../config/config.json' with { type: 'json' }
+
+// Dynamic imports
+const { default: config } = await import('../config/config.json', { with: { type: 'json' } })
+```
+
+The spec suggests matching upgrades for Web Worker instantiation and HTML's `script` tag.
+
+<Footnote>
+
+This proposal supersedes the same-stage *JSON Modules* proposal, that used a more specific `assert` syntax.
+
+</Footnote>
+
+
+---
+
+# ES2025? More flexible named capture groups <span class="stage">stage 3</span>
+
+Named capture groups are a major readability / maintainability boost for regexes, but an oversight in their initial spec prevented using the same group in multiple parts of an alternative.
+
+It should have been ready for ES2023 but lacked some tests and a second native implementation.  Tests are done now and we're waiting for either v8 or Spidermonkey to jump the gun: this will very likely be part of ES2024.
+
+```js
+const year = dateText.match(/(?<year>[0-9]{4})-[0-9]{2}|[0-9]{2}-(?<year>[0-9]{4})/)?.groups.year
+```
+
+
+---
+
+# ES2025? Decorators <span class="stage">stage 3</span>
+
+<!-- Certes, ça ne concerne que les gens qui font beaucoup de POO, et si la tendance  est à la baisse en JS, de nombreux frameworks importants l'utilisent énormément (mais du coup, ils ont tendance à le faire en TypeScript). -->
+
+This takes **forever**…  Went through a few false-starts, then we had to wrap the test suite, and now we're waiting for native implementations.  The spec is done, anyway, and TypeScript aligns with it.  This is a great way of doing AOP *(as are ES proxies, by the way)*.  The language provides the plumbing, and the community provides the actual decorators.
+
+```js
+class SuperWidget extends Component {
+  @deprecate
+  deauth() { … }
+
+  @memoize('1m')
+  userFullName() { … }
+
+  @autobind
+  logOut() {
+    this.#oauthToken = null
+  }
+
+  @override
+  render() { … }
+}
+```
+
+---
+
+# ES2025? Shadow Realms <span class="stage">stage "2.7"</span>
+
+This provides the building blocks for having full control of **sandboxed JS evaluation** (among other things, you can customize available globals and standard library elements).
+
+This is a **godsend** for web-based IDEs, DOM virtualisation, test frameworks, server-side rendering, secure end-user scripts, and more!
+
+```js
+const realm = new ShadowRealm()
+
+const process = await realm.importValue('./utils/processor.js', 'process')
+const processedData = process(data)
+
+// True isolation!
+globalThis.userLocation = 'Freiburg'
+realm.evaluate('globalThis.userLocation = "Paris"')
+globalThis.userLocation // => 'Freiburg'
+```
+
+Check out [this explainer](https://github.com/tc39/proposal-shadowrealm/blob/main/explainer.md) for full details.
+
+---
+
 # Temporal 🥳 <span class="stage">stage 3</span>
 
 This will (advantageously) replace Moment, Luxon, date-fns, etc. We already have `Intl` for formatting, but we're upping our game here. Immutable-style API, nanosecond precision, all TZ supported, distinguishes absolute and local time, duration vs. interval, etc.  Just awesome! Check out the [docs](https://tc39.es/proposal-temporal/docs/), [cookbook](https://tc39.es/proposal-temporal/docs/cookbook.html) and [Maggie's talk at dotJS 2019](https://www.dotconferences.com/2019/12/maggie-johnson-pint-making-time-make-sense)!

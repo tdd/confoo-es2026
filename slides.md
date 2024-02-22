@@ -2,8 +2,8 @@
 theme: ./theme
 titleTemplate: "What’s up in ES206? A talk by Christophe Porteneuve at Confoo Montréal 2024"
 background: /covers/mosi-knife--PVgDgKXgZA-unsplash.jpg
-download: true
-exportFilename: confoo-2024-es2026-porteneuve
+# download: true
+# exportFilename: confoo-2024-es2026-porteneuve
 class: text-center
 highlighter: shiki
 monaco: false
