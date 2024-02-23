@@ -50,7 +50,7 @@ background: /covers/mosi-knife--PVgDgKXgZA-unsplash.jpg
 
 # 🙏🏻 Thank you! 😊
 
-These slides are at <a href="https://bit.ly/confoo-es2026"><tt>bit.ly/confoo-es2026</tt></a>.
+These slides are at [`bit.ly/confoo-es2026`](https://bit.ly/confoo-es2026).
 
 Christophe: [`@porteneuve`](https://twitter.com/porteneuve) / [`@porteneuve@piaille.fr`](https://piaille.fr/@porteneuve) / [LinkedIn](https://www.linkedin.com/in/christopheporteneuve/)
 
