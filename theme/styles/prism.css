@@ -1,6 +1,6 @@
-@import 'prism-theme-vars/base.css';
-@import 'codemirror-theme-vars/base.css';
-@import 'prism-theme-vars/to-codemirror.css';
+@import "prism-theme-vars/base.css";
+@import "codemirror-theme-vars/base.css";
+@import "prism-theme-vars/to-codemirror.css";
 
 :root {
   --prism-font-family: var(--slidev-code-font-family);
@@ -10,7 +10,9 @@
 }
 
 .slidev-code code {
-  font-family: "Operator Mono SSm A", "Operator Mono SSm B", ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace !important;
+  font-family: "Operator Mono SSm A", "Operator Mono SSm B", ui-monospace,
+    SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New",
+    monospace !important;
   font-style: normal;
   font-weight: 400;
 }
@@ -65,9 +67,9 @@ html.dark {
 
 :not(pre) > code {
   font-size: 0.9em;
-  background: rgba(125, 156, 242, .14);
+  background: rgba(125, 156, 242, 0.14);
   @apply font-light py-0.5;
-  padding: .1em .3em;
+  padding: 0.1em 0.3em;
   border-radius: 0.3em;
 }
 
